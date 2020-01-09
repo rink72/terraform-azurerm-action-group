@@ -10,15 +10,17 @@ variable "ag_depends_on" {
 }
 
 resource "azurerm_monitor_action_group" "action_group" {
+  for_each = var.action_group_definitions
 
-  name                = var.name
+  name                = each.key
   resource_group_name = var.resource_group_name
-  short_name          = var.short_name
-  enabled             = var.enabled
+  short_name          = each.value.short_name
+  enabled             = each.value.enabled
 
 
   dynamic "webhook_receiver" {
-    for_each = [for wh in var.webhook_definitions : {
+    # Check if any webhooks have been defined. If not, pass an empty array so none are created.
+    for_each = [for wh in lookup(each.value, "webhook_definitions", []) : {
       name                    = wh.name
       service_uri             = wh.service_uri
       use_common_alert_schema = wh.use_common_alert_schema
@@ -32,7 +34,8 @@ resource "azurerm_monitor_action_group" "action_group" {
   }
 
   dynamic "email_receiver" {
-    for_each = [for e in var.email_definitions : {
+    # Check if any emails have been defined. If not, pass an empty array so none are created.
+    for_each = [for e in lookup(each.value, "email_definitions", []) : {
       name                    = e.name
       email_address           = e.email_address
       use_common_alert_schema = e.use_common_alert_schema
