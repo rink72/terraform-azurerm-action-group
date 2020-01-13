@@ -2,7 +2,7 @@
 
 Configuration in this directory creates a test resource group and then deploys a single alert group in to it.
 
-It will configure two webhook receivers and two email receivers.
+It will configure two webhook receivers.
 
 This also demonstrates the usage of the `ag_depends_on` variable.
 
