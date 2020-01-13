@@ -85,7 +85,7 @@ Action group with webhook and email:
 
 ## webhook_definitions
 
-This variable should be a list of objects. It has three required parameters `name`, `service_uri` and `use_common_alert_schema`.
+This is a possible parameter that can be defined inside the alert_group_definitions maps and should list of objects. It is optional but, if defined, it has three required parameters `name`, `service_uri` and `use_common_alert_schema`.
 
 Example:
 
@@ -106,7 +106,7 @@ Example:
 
 ## email_definitions
 
-This variable should be a list of objects. It has three required parameters `name`, `email_address` and `use_common_alert_schema`.
+This is a possible parameter that can be defined inside the alert_group_definitions maps and should list of objects. It is optional but, if defined, it has three required parameters `name`, `email_address` and `use_common_alert_schema`.
 
 Example:
 

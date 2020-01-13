@@ -6,31 +6,24 @@ locals {
   location = "australiasoutheast"
   name     = "testingag"
 
-  webhooks = [
-    {
-      name                    = "testwh"
-      service_uri             = "http://test"
-      use_common_alert_schema = true
-    },
-    {
-      name                    = "testwh2"
-      service_uri             = "http://test2"
-      use_common_alert_schema = false
+  action_group_definitions = {
+    ag-test1 = {
+      short_name = "ag-test1"
+      enabled    = true
+      webhook_definitions = [
+        {
+          name                    = "testwh"
+          service_uri             = "http://test"
+          use_common_alert_schema = true
+        },
+        {
+          name                    = "testwh2"
+          service_uri             = "http://test2"
+          use_common_alert_schema = false
+        }
+      ]
     }
-  ]
-
-  emails = [
-    {
-      name                    = "email1"
-      email_address           = "test1@email.com"
-      use_common_alert_schema = true
-    },
-    {
-      name                    = "email2"
-      email_address           = "test2@email.com"
-      use_common_alert_schema = false
-    }
-  ]
+  }
 }
 
 # Get a random integer to provide a unique Log Analytics workspace name as they are globally unique
@@ -52,12 +45,9 @@ module "resource-group" {
 module "alert-group" {
   source = "../../"
 
-  name                = "${local.name}${random_integer.id.result}"
   resource_group_name = "${local.name}-${random_integer.id.result}"
-  short_name          = local.name
 
-  webhook_definitions = local.webhooks
-  email_definitions   = local.emails
+  action_group_definitions = local.action_group_definitions
 
   ag_depends_on = [
     module.resource-group
